@@ -47,6 +47,13 @@ test('.Net .csproj multiple target frameworks extracted as expected', async (t) 
   t.deepEqual(targetFrameworks, ['netstandard2.0', 'net462'], 'targetFramework array is as expected');
 });
 
+test('.Net .csproj with conditional target frameworks extracted as expected', async (t) => {
+  const targetFrameworks = await extractTargetFrameworksFromFiles(
+      `${__dirname}/../fixtures/dotnet-conditional-target-frameworks`,
+      'conditional-target-frameworks.csproj');
+  t.deepEqual(targetFrameworks, ['net3.1', 'net5.0', 'net461'], 'targetFramework array is as expected');
+});
+
 /*
 ****** fsproj ******
 */

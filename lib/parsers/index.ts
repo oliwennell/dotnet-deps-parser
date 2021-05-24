@@ -424,10 +424,14 @@ export function getTargetFrameworksFromProjectFile(manifestFile) {
   if (_isEmpty(propertyList)) {
     return targetFrameworksResult;
   }
-  // TargetFrameworks is expected to be a list ; separated
+  // The TargetFrameworks value is expected to be a string (containing a list of frameworks ; separated).
+  // This value is normally parsed from XML into a string variable.
+  // However when the XML element has attributes, it is parsed into an object, with the value stored in '_'.
   if (propertyList.TargetFrameworks) {
     for (const item of propertyList.TargetFrameworks) {
-      targetFrameworksResult = [...targetFrameworksResult, ...item.split(';').filter( (x) => !_isEmpty(x))];
+      const rawTargetFrameworks = typeof item === 'object' ? item._ : item;
+      const parsedTargetFrameworks = rawTargetFrameworks.split(';').filter((x) => !_isEmpty(x));
+      targetFrameworksResult = [...targetFrameworksResult, ...parsedTargetFrameworks ];
     }
   }
   // TargetFrameworkVersion is expected to be a string containing only one item
